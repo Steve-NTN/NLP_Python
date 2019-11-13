@@ -45,37 +45,6 @@ def edits2(word):
 
 ################ Test Code 
 
-def unit_tests():
-    assert correction('speling') == 'spelling'              # insert
-    assert correction('korrectud') == 'corrected'           # replace 2
-    assert correction('bycycle') == 'bicycle'               # replace
-    assert correction('inconvient') == 'inconvenient'       # insert 2
-    assert correction('arrainged') == 'arranged'            # delete
-    assert correction('peotry') =='poetry'                  # transpose
-    assert correction('peotryy') =='poetry'                 # transpose + delete
-    assert correction('word') == 'word'                     # known
-    assert correction('quintessential') == 'quintessential' # unknown
-    assert words('This is a TEST.') == ['this', 'is', 'a', 'test']
-    assert Counter(words('This is a test. 123; A TEST this is.')) == (
-           Counter({'123': 1, 'a': 2, 'is': 2, 'test': 2, 'this': 2}))
-    assert len(WORDS) == 32192
-    assert sum(WORDS.values()) == 1115504
-    assert WORDS.most_common(10) == [
-     ('the', 79808),
-     ('of', 40024),
-     ('and', 38311),
-     ('to', 28765),
-     ('in', 22020),
-     ('a', 21124),
-     ('that', 12512),
-     ('he', 12401),
-     ('was', 11410),
-     ('it', 10681)]
-    assert WORDS['the'] == 79808
-    assert P('quintessential') == 0
-    assert 0.07 < P('the') < 0.08
-    return 'unit_tests pass'
-
 def spelltest(tests, verbose=False):
     "Run correction(wrong) on all (right, wrong) pairs; report results."
     import time
@@ -97,10 +66,38 @@ def spelltest(tests, verbose=False):
 def Testset(lines):
     "Parse 'right: wrong1 wrong2' lines into [('right', 'wrong1'), ('right', 'wrong2')] pairs."
     return [(right, wrong)
-            for (right, wrongs) in (line.split(':') for line in lines)
-            for wrong in wrongs.split()]
+        for (right, wrongs) in (line.split(':') for line in lines)
+        for wrong in wrongs.split()]
+
+def correctionText(sentences):
+    sentences.strip()
+    sentences = sentences.replace("  ", "")
+    a = sentences.lower().split(' ')
+    right = ""
+    for i in a:
+        word = correction(i)
+        right = right + word + " "
+    return right
 
 if __name__ == '__main__':
-    print(unit_tests())
-    spelltest(Testset(open('spell-testset1.txt')))
-    spelltest(Testset(open('spell-testset2.txt')))
+    
+    while True:
+        print("Choose option you want to fix:\n1.Word\t2.Text\t3.Quit")
+        num = input()
+        if num == "1":
+            while True:
+                print("Press word...(P/s: press 0 to stop)")
+                str = input()
+                if str == "0": break
+                print("Candidates of word:\n", candidates(str))
+                print("Words:\n", known(str))
+        elif num == "2":
+            while True:
+                print("Press text...(P/s: press 0 to stop)")
+                str = input()
+                if str == "0": break
+                print(correctionText(str))
+        elif num == "3":
+            exit()
+        else:
+            print("Try again")
