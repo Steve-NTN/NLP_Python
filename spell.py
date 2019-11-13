@@ -11,7 +11,7 @@ from collections import Counter
 
 def words(text): return re.findall(r'\w+', text.lower())
 
-WORDS = Counter(words(open('Data.txt').read()))
+WORDS = Counter(words(open('big.txt').read()))
 
 def P(word, N=sum(WORDS.values())): 
     "Probability of `word`."
@@ -79,7 +79,7 @@ def unit_tests():
 def spelltest(tests, verbose=False):
     "Run correction(wrong) on all (right, wrong) pairs; report results."
     import time
-    start = time.process_time()
+    start = time.clock()
     good, unknown = 0, 0
     n = len(tests)
     for right, wrong in tests:
@@ -90,7 +90,7 @@ def spelltest(tests, verbose=False):
             if verbose:
                 print('correction({}) => {} ({}); expected {} ({})'
                       .format(wrong, w, WORDS[w], right, WORDS[right]))
-    dt = time.process_time() - start
+    dt = time.clock() - start
     print('{:.0%} of {} correct ({:.0%} unknown) at {:.0f} words per second '
           .format(good / n, n, unknown / n, n / dt))
     
@@ -101,10 +101,6 @@ def Testset(lines):
             for wrong in wrongs.split()]
 
 if __name__ == '__main__':
-    while True:
-        str = input()
-        if str == "0": exit()
-        print(correction(str))
-        
-    #spelltest(Testset(open('spell-testset1.txt')))
-    #spelltest(Testset(open('spell-testset2.txt')))
+    print(unit_tests())
+    spelltest(Testset(open('spell-testset1.txt')))
+    spelltest(Testset(open('spell-testset2.txt')))
