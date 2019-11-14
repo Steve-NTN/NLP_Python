@@ -79,8 +79,7 @@ def correctionText(sentences):
         right = right + word + " "
     return right
 
-if __name__ == '__main__':
-    
+def option():
     while True:
         print("Choose option you want to fix:\n1.Word\t2.Text\t3.Quit")
         num = input()
@@ -90,7 +89,7 @@ if __name__ == '__main__':
                 str = input()
                 if str == "0": break
                 print("Candidates of word:\n", candidates(str))
-                print("Words:\n", known(str))
+                #print("Words:\n", known(edits2(str)))
         elif num == "2":
             while True:
                 print("Press text...(P/s: press 0 to stop)")
@@ -101,3 +100,10 @@ if __name__ == '__main__':
             exit()
         else:
             print("Try again")
+
+
+if __name__ == '__main__':
+    option()
+    
+
+
