@@ -87,16 +87,26 @@ def spelltest(tests, verbose=False):
     dt = time.clock() - start
     print('{:.0%} of {} correct ({:.0%} unknown) at {:.0f} words per second '
           .format(good / n, n, unknown / n, n / dt))
-    
+
+def countLine(f):
+    return sum(1 for line in f)
+
 def Testset(lines):
     "Parse 'right: wrong1 wrong2' lines into [('right', 'wrong1'), ('right', 'wrong2')] pairs."
+    import time
+    start = time.clock()
+    good, n = 0, 0
     for line in lines:
-        for (right, wrongs) in (line.split(":")):
+        if len(line) == 1:
+            t = time.clock() - start
+            print('{:.0%} correct of {} words at {}s'.format(good/n, n, t))
+            exit()
+        else:
+            (right, wrongs) = (line.split(':'))
             for wrong in wrongs.split():
-                print([(right, wrong)])
-         
-
-
+                w = correction(wrong)    
+                good += (w == right)            
+                n += 1
 def correctionText(sentences):
     sentences.strip()
     a = sentences.lower().split(' ')
@@ -130,7 +140,7 @@ def option():
 
 
 if __name__ == '__main__':
-    #option()
-    print(Testset(open('data_text1.txt')))
-    #spelltest(Testset(open('data_text2.txt')))
-    #print(unit_tests())
+     
+    print(unit_tests())
+    Testset(open('data_text1.txt'))
+    option()

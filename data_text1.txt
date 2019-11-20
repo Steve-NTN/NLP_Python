@@ -1,4 +1,4 @@
-contented:  contende contenpted contended contentid
+contented: contenpted contende contended contentid
 beginning: begining
 problem: problam proble promblem proplen
 driven: dirven
