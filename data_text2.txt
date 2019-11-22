@@ -11,15 +11,6 @@ transportability: transportibility
 minuscule: miniscule
 independent: independant independant
 arranged: aranged arrainged
-poetry: poartry poertry poetre poety powetry
-level: leval
-basically: basicaly
-triangular: triangulaur
-unexpected: unexpcted unexpeted unexspected
-standardizing: stanerdizing
-variable: varable
-further: futher
-monitoring: monitering
 biscuits: biscits biscutes biscuts bisquits buiscits buiscuts
 available: avaible
 separate: seperate
@@ -35,6 +26,7 @@ there: ther
 experiences: experances
 built: biult
 totally: totaly
+theory: thery theoy thero
 understand: undersand undistand
 southern: southen
 definitely: definately difinately
@@ -114,29 +106,7 @@ visitors: vistors
 auxiliary: auxillary
 decided: descided
 benefit: benifit
-consider: concider
-fails: failes
-career: carrer
-occurrence: occurence occurence
-certain: cirtain
-poem: poame
-lieu: liew
-establishing: astablishing establising
-different: diffrent
-loans: lones
-extremely: extreamly
-addressable: addresable
-gallery: galery gallary gallerry gallrey
-centrally: centraly
-families: familes
-bicycle: bicycal bycicle bycycle
-choice: choise
-opposite: opisite oppasite oppesite oppisit oppisite opposit oppossite oppossitte
-curtains: cartains certans courtens cuaritains curtans curtians curtions
-address: adress adres
-liaison: liaision liason
-management: managment
 inconvenient: inconvienient inconvient inconvinient
 variant: vairiant
 supersede: supercede superceed
-
+output: outpt ouput

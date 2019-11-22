@@ -99,7 +99,7 @@ def Testset(lines):
     for line in lines:
         if len(line) == 1:
             t = time.clock() - start
-            print('{:.0%} correct of {} words at {}s'.format(good/n, n, t))
+            print('{:.0%} correct of {} words at {:.0f}s'.format(good/n, n, t))
             exit()
         else:
             (right, wrongs) = (line.split(':'))
@@ -115,6 +115,8 @@ def correctionText(sentences):
         word = correction(i)
         textRight = textRight + word + " "
     return textRight
+
+
 
 def option():
     while True:
@@ -141,6 +143,7 @@ def option():
 
 if __name__ == '__main__':
      
-    print(unit_tests())
-    Testset(open('data_text1.txt'))
+    #print(unit_tests())
+    #Testset(open('data_text1.txt'))
+    #Testset(open('data_text1.txt'))
     option()

@@ -1,0 +1,75 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'C:\Users\Administrator\Desktop\NLP\NLP_Python\NLP_Python\display.ui'
+#
+# Created by: PyQt5 UI code generator 5.13.0
+#
+# WARNING! All changes made in this file will be lost!
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+from spell import correction, correctionText
+
+class Ui_SpellingCorrection(object):
+    def setupUi(self, SpellingCorrection):
+        SpellingCorrection.setObjectName("SpellingCorrection")
+        SpellingCorrection.resize(538, 416)
+        self.centralwidget = QtWidgets.QWidget(SpellingCorrection)
+        self.centralwidget.setObjectName("centralwidget")
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(220, 50, 93, 41))
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setGeometry(QtCore.QRect(400, 297, 101, 41))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_3.setGeometry(QtCore.QRect(220, 110, 93, 41))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit.setGeometry(QtCore.QRect(12, 41, 201, 121))
+        self.lineEdit.setObjectName("lineEdit")
+        self.listWidget = QtWidgets.QListWidget(self.centralwidget)
+        self.listWidget.setGeometry(QtCore.QRect(320, 10, 211, 192))
+        self.listWidget.setObjectName("listWidget")
+        SpellingCorrection.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(SpellingCorrection)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 538, 26))
+        self.menubar.setObjectName("menubar")
+        SpellingCorrection.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(SpellingCorrection)
+        self.statusbar.setObjectName("statusbar")
+        SpellingCorrection.setStatusBar(self.statusbar)
+
+        self.retranslateUi(SpellingCorrection)
+        QtCore.QMetaObject.connectSlotsByName(SpellingCorrection)
+        self.pushButton_2.clicked.connect(self.quit)
+        self.pushButton.clicked.connect(self.showText)
+        self.pushButton_3.clicked.connect(self.clear)
+
+    def retranslateUi(self, SpellingCorrection):
+        _translate = QtCore.QCoreApplication.translate
+        SpellingCorrection.setWindowTitle(_translate("SpellingCorrection", "SpellingCorrection"))
+        self.pushButton.setText(_translate("SpellingCorrection", "Correction"))
+        self.pushButton_2.setText(_translate("SpellingCorrection", "Quit"))
+        self.pushButton_3.setText(_translate("SpellingCorrection", "Clear"))
+
+    def quit(self):
+        exit()
+    
+    def clear(self):
+        self.listWidget.clear()
+
+    def showText(self):
+        value = self.lineEdit.text()
+
+        #self.lineEdit.clear()
+        self.listWidget.addItem(correctionText(value))
+        
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    SpellingCorrection = QtWidgets.QMainWindow()
+    ui = Ui_SpellingCorrection()
+    ui.setupUi(SpellingCorrection)
+    SpellingCorrection.show()
+    sys.exit(app.exec_())
