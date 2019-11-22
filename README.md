@@ -1,5 +1,14 @@
 # NLP_Python
 Spelling correction by Python
 
-
-pyuic5 -x "C:\Users\Administrator\Desktop\NLP\NLP_Python\NLP_Python\display.ui" -o "C:\Users\Administrator\Desktop\NLP\NLP_Python\NLP_Python\display.py"
+How to use framework
+- download:
+  python -m pip install pyqt5
+  python -m pip install pyqt5-tool
+  
+- Convert file .ui to file .py
+  - Open cmd into folder project
+  - pyuic5 -x "path file .ui" -o "path file .py"
+  
+- References:
+   https://www.youtube.com/watch?v=ksW59gYEl6Q
