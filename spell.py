@@ -1,25 +1,58 @@
-"""Spelling Corrector in Python 3; see http://norvig.com/spell-correct.html
+#!/usr/bin/python
 
-Copyright (c) 2007-2016 Peter Norvig
-MIT license: www.opensource.org/licenses/mit-license.php
-"""
-
+# -*- coding: utf8 -*-
 ################ Spelling Corrector 
-
+ASCII_REPLS = {u"[àảãáạăằẳẵắặâầẩẫấậ]": "a", u"[ÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ]": "A",
+               u"đ": "d",                   u"Đ": "D",
+               u"[èẻẽéẹêềểễếệ]": "e",       u"[ÈẺẼÉẸÊỀỂỄẾỆ]": "E",
+               u"[ìỉĩíị]": "i",             u"[ÌỈĨÍỊ]": "I",
+               u"[òỏõóọôồổỗốộơờởỡớợ]": "o", u"[ÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ]": "O",
+               u"[ùủũúụưừửữứự]": "u",       u"[ÙỦŨÚỤƯỪỬỮỨỰ]": "U",
+               u"[ỳỷỹýỵ]": "y",             u"[ỲỶỸÝỴ]": "Y"}
+VIET_REPLS = {u"[àảãáạ]": u"a",     u"[ÀẢÃÁẠ]": u"A",
+              u"[ăằẳẵắặ]": u"ă",    u"[ĂẰẲẴẮẶ]": u"Ă",
+              u"[âầẩẫấậ]": u"â",    u"[ÂẦẨẪẤẬ]": u"Â",
+              u"[èẻẽéẹ]": u"e",     u"[ÈẺẼÉẸ]": u"E",
+              u"[êềểễếệ]": u"ê",    u"[ÊỀỂỄẾỆ]": u"Ê",
+              u"[ìỉĩíị]": u"i",     u"[ÌỈĨÍỊ]": u"I",
+              u"[òỏõóọ]": u"o",     u"[ÒỎÕÓỌ]": u"O",
+              u"[ôồổỗốộ]": u"ô",    u"[ÔỒỔỖỐỘ]": u"Ô",
+              u"[ơờởỡớợ]": u"ơ",    u"[ƠỜỞỠỚỢ]": u"Ơ",
+              u"[ùủũúụ]": u"u",     u"[ÙỦŨÚỤ]": u"U",
+              u"[ưừửữứự]": u"ư",    u"[ƯỪỬỮỨỰ]": u"Ư",
+              u"[ỳỷỹýỵ]": u"y",     u"[ỲỶỸÝỴ]": u"Y"}
 import re
 from collections import Counter
 
+##Uni-Gram
 def words(text): return re.findall(r'\w+', text.lower())
 
-WORDS = Counter(words(open('big.txt').read()))
+WORDS = Counter(words(open('big1.txt', encoding="utf8").read()))
 
-def P(word, N=sum(WORDS.values())): 
+def Pw(word, N=sum(WORDS.values())): 
     "Probability of `word`."
     return WORDS[word] / N
 
+##Bi-Gram
+def readBiGram(lines):
+    arr = []
+    f = open(lines, encoding="utf8")
+    for i in f:
+        arr.append(i.replace("\n", "").lower())
+    return arr
+    
+Bi_Gram = Counter(readBiGram("big2.txt"))
+
+def Pw0w1(text, N = sum(WORDS.values())):
+    return Bi_Gram[text] / N
+
+def Pw1_w0(text):
+    (w0, w1) = text.split(" ")
+    return Pw0w1(text) / Pw(w0)
+
 def correction(word): 
     "Most probable spelling correction for word."
-    return max(candidates(word), key=P)
+    return max(candidates(word), key=Pw)
 
 def candidates(word): 
     "Generate possible spelling corrections for word."
@@ -31,13 +64,18 @@ def known(words):
 
 def edits1(word):
     "All edits that are one edit away from `word`."
-    letters    = 'abcdefghijklmnopqrstuvwxyz'
+    letters    = u'aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvxyỳỷỹýỵ'
     splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
     deletes    = [L + R[1:]               for L, R in splits if R]
     transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
     replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
     inserts    = [L + c + R               for L, R in splits for c in letters]
-    return set(deletes + transposes + replaces + inserts)
+    arr = readTV(open("big4.txt", encoding="utf8"))
+    addTV = []
+    for i in arr:
+        addTV.append(word.replace(i[0], i[1]))
+      
+    return set(addTV + deletes + transposes + replaces + inserts)
 
 def edits2(word): 
     "All edits that are two edits away from `word`."
@@ -116,7 +154,17 @@ def correctionText(sentences):
         textRight = textRight + word + " "
     return textRight
 
-
+def readTV(lines):
+    a = []
+    for line in lines:
+        if line == None:
+            break
+        else:
+            (left, right) = line.split(':')
+            a.append((left, right.replace("\n","")))
+    return a
+    #for i in a:
+        #print(i[0], i[1])
 
 def option():
     while True:
@@ -145,5 +193,6 @@ if __name__ == '__main__':
      
     #print(unit_tests())
     #Testset(open('data_text1.txt'))
-    #Testset(open('data_text1.txt'))
-    option()
+    #option()
+    print(Pw1_w0("thúy kiều"))
+    
