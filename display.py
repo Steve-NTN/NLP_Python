@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'C:\Users\Administrator\Desktop\NLP\NLP_Python\NLP_Python\display.ui'
 #
@@ -26,15 +25,15 @@ class Ui_SpellingCorrection(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(350, 140, 93, 41))
         self.pushButton_3.setObjectName("pushButton_3")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(10, 70, 331, 121))
-        self.lineEdit.setObjectName("lineEdit")
         self.listWidget = QtWidgets.QListWidget(self.centralwidget)
         self.listWidget.setGeometry(QtCore.QRect(450, 20, 341, 221))
         self.listWidget.setObjectName("listWidget")
+        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit.setGeometry(QtCore.QRect(10, 60, 331, 141))
+        self.textEdit.setObjectName("textEdit")
         SpellingCorrection.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(SpellingCorrection)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 805, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 808, 26))
         self.menubar.setObjectName("menubar")
         SpellingCorrection.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(SpellingCorrection)
@@ -46,10 +45,10 @@ class Ui_SpellingCorrection(object):
         self.pushButton_2.clicked.connect(self.quit)
         self.pushButton.clicked.connect(self.showText)
         self.pushButton_3.clicked.connect(self.clear)
-
+         
     def retranslateUi(self, SpellingCorrection):
         _translate = QtCore.QCoreApplication.translate
-        SpellingCorrection.setWindowTitle(_translate("SpellingCorrection", "SpellingCorrection"))
+        SpellingCorrection.setWindowTitle(_translate("SpellingCorrection", "Spelling Correction"))
         self.pushButton.setText(_translate("SpellingCorrection", "Correction"))
         self.pushButton_2.setText(_translate("SpellingCorrection", "Quit"))
         self.pushButton_3.setText(_translate("SpellingCorrection", "Clear"))
@@ -61,7 +60,8 @@ class Ui_SpellingCorrection(object):
         self.listWidget.clear()
 
     def showText(self):
-        value = self.lineEdit.text()
+        value = self.textEdit.toPlainText()
+
         #self.lineEdit.clear()
         self.listWidget.addItem(correctionText(value))
         

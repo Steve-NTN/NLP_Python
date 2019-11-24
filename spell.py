@@ -41,14 +41,45 @@ def readBiGram(lines):
         arr.append(i.replace("\n", "").lower())
     return arr
     
-Bi_Gram = Counter(readBiGram("big2.txt"))
+Bi_GramCounter = Counter(readBiGram("big2.txt"))
+Bi_Gram = readBiGram("big2.txt")
 
-def Pw0w1(text, N = sum(WORDS.values())):
-    return Bi_Gram[text] / N
+def Pw0w1(text):
+    N = sum(Bi_GramCounter.values())
+    return Bi_GramCounter[text] / N
 
 def Pw1_w0(text):
     (w0, w1) = text.split(" ")
-    return Pw0w1(text) / Pw(w0)
+    if w0 in WORDS and w1 not in WORDS:
+        w1 = max(candidates(w1), key=Pw0w1)
+        return w1
+    elif w1 in WORDS:
+        return w1
+    elif w0 not in WORDS and w1 not in WORDS:
+        w1 = max(candidates(w1), key=Pw0w1)
+        return w1
+    else:
+        return ""
+
+
+def correctionBi_gram(text):
+    text.strip()
+    (w0, w1) = text.split(" ")
+    Pmax = 0
+    word = ""
+    for bi_word in Bi_Gram:
+        if bi_word.split(" ")[0] == w0:
+            if Pw0w1(bi_word) > Pmax:
+                Pmax = Pw0w1(bi_word)
+                word = bi_word.split(" ")[1]
+            
+    if w1 not in WORDS:
+        if word in candidates(w1):         
+            return word
+        else:
+            return correction(w1)
+    else:
+        return w1
 
 def correction(word): 
     "Most probable spelling correction for word."
@@ -83,28 +114,10 @@ def edits2(word):
 
 ################ Test Code 
 def unit_tests():
-    assert correction('speling') == 'spelling'              # insert
-    assert correction('korrectud') == 'corrected'           # replace 2
-    assert correction('bycycle') == 'bicycle'               # replace
-    assert correction('inconvient') == 'inconvenient'       # insert 2
-    assert correction('arrainged') == 'arranged'            # delete
-    assert correction('peotry') =='poetry'                  # transpose
-    assert correction('peotryy') =='poetry'                 # transpose + delete
-    assert correction('word') == 'word'                     # known
-    assert correction('quintessential') == 'quintessential' # unknown
-    assert words('This is a TEST.') == ['this', 'is', 'a', 'test']
-    assert Counter(words('This is a test. 123; A TEST this is.')) == (
-           Counter({'123': 1, 'a': 2, 'is': 2, 'test': 2, 'this': 2}))
-    assert len(WORDS) == 32198
-    assert sum(WORDS.values()) == 1115585
-    assert WORDS.most_common(10) == [('the', 79809), ('of', 40024), 
-        ('and', 38312), ('to', 28765), 
-        ('in', 22023), ('a', 21124), 
-        ('that', 12512), ('he', 12401), 
-        ('was', 11410), ('it', 10681)]
-    assert WORDS['the'] == 79809
-    assert P('quintessential') == 0
-    assert 0.07 < P('the') < 0.08
+    assert correction('hăg') == 'hăng'              # insert
+    assert correction('dạu') == 'dạo'           # replace 2
+    assert correction('nhug') == 'nhung'               # replace
+    assert correction('ưl') =='lư'                 # transpose + delete
     return 'unit_tests pass'
 
 
@@ -148,10 +161,16 @@ def Testset(lines):
 def correctionText(sentences):
     sentences.strip()
     a = sentences.lower().split(' ')
+    if len(a) == 1:
+        return correction(sentences)
     textRight = ""
-    for i in a:
-        word = correction(i)
-        textRight = textRight + word + " "
+    a[0] = correction(a[0])
+    textRight += a[0] + " "
+    for k in range(1, len(a)):
+        textRight += correctionBi_gram(a[k-1] + " " + a[k]) + " "
+        arr = textRight.split()
+        a[k] = arr[len(arr)-1]
+        
     return textRight
 
 def readTV(lines):
@@ -194,5 +213,5 @@ if __name__ == '__main__':
     #print(unit_tests())
     #Testset(open('data_text1.txt'))
     #option()
-    print(Pw1_w0("thúy kiều"))
+    print(correctionText("cô âsy thaajt đảm đag"))
     
