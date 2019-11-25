@@ -29,25 +29,30 @@ def words(text): return re.findall(r'\w+', text.lower())
 
 WORDS = Counter(words(open('big1.txt', encoding="utf8").read()))
 
+##Return probability of word in data
 def Pw(word, N=sum(WORDS.values())): 
     "Probability of `word`."
     return WORDS[word] / N
 
-##Bi-Gram
+##Bi-Gram##
+#Return array lines bi-gram in big2.txt 
 def readBiGram(lines):
     arr = []
     f = open(lines, encoding="utf8")
     for i in f:
         arr.append(i.replace("\n", "").lower())
     return arr
-    
+#Get value and amount of value
 Bi_GramCounter = Counter(readBiGram("big2.txt"))
+#Get list bi-gram word from big2.txt
 Bi_Gram = readBiGram("big2.txt")
 
+##Return probality text in data bi-gram
 def Pw0w1(text):
     N = sum(Bi_GramCounter.values())
     return Bi_GramCounter[text] / N
 
+##Return the next word (w1) depend on probality
 def Pw1_w0(text):
     (w0, w1) = text.split(" ")
     if w0 in WORDS and w1 not in WORDS:
@@ -61,7 +66,7 @@ def Pw1_w0(text):
     else:
         return ""
 
-
+##Return the next word (w1) depend on the prev word (w0)
 def correctionBi_gram(text):
     text.strip()
     (w0, w1) = text.split(" ")
@@ -81,10 +86,12 @@ def correctionBi_gram(text):
     else:
         return w1
 
+##Return the word have probality max
 def correction(word): 
     "Most probable spelling correction for word."
     return max(candidates(word), key=Pw)
 
+##Return candidates of word
 def candidates(word): 
     "Generate possible spelling corrections for word."
     return (known([word]) or known(edits1(word)) or known(edits2(word)) or [word])
@@ -93,6 +100,7 @@ def known(words):
     "The subset of `words` that appear in the dictionary of WORDS."
     return set(w for w in words if w in WORDS)
 
+##Add list Vietnamese words
 def edits1(word):
     "All edits that are one edit away from `word`."
     letters    = u'aàảãáạăằẳẵắặâầẩẫấậbcdđeèẻẽéẹêềểễếệfghiìỉĩíịklmnoòỏõóọôồổỗốộơờởỡớợpqrstuùủũúụưừửữứựvxyỳỷỹýỵ'
@@ -143,21 +151,25 @@ def countLine(f):
     return sum(1 for line in f)
 
 def Testset(lines):
-    "Parse 'right: wrong1 wrong2' lines into [('right', 'wrong1'), ('right', 'wrong2')] pairs."
+    
     import time
     start = time.clock()
     good, n = 0, 0
     for line in lines:
-        if len(line) == 1:
+        if len(line) == 0:
             t = time.clock() - start
             print('{:.0%} correct of {} words at {:.0f}s'.format(good/n, n, t))
             exit()
         else:
+            
             (right, wrongs) = (line.split(':'))
             for wrong in wrongs.split():
                 w = correction(wrong)    
                 good += (w == right)            
                 n += 1
+            print( len(line))
+
+##Check 2 side by side words in sentences and return corrected sentences
 def correctionText(sentences):
     sentences.strip()
     a = sentences.lower().split(' ')
@@ -174,6 +186,7 @@ def correctionText(sentences):
         
     return textRight
 
+##Return the first word in sentences by checking the next word
 def correctionFirst(arrText):
     first = arrText[0]
     second = correction(arrText[1])
@@ -192,7 +205,7 @@ def correctionFirst(arrText):
     else:
         return first
 
-
+##Return array VietNamese characters
 def readTV(lines):
     a = []
     for line in lines:
@@ -234,6 +247,6 @@ if __name__ == '__main__':
     #Testset(open('data_text1.txt'))
     #option()
     print(correctionText("Emm ddax bỏa ttooi ddi thieejt roofi phhari hôg"))
-    #print(correctionText("Thusy kieefu"))
+    #print(Testset(open("data_text1.txt", encoding="utf8")))
     
     
