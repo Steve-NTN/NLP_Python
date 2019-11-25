@@ -74,7 +74,7 @@ def correctionBi_gram(text):
                 word = bi_word.split(" ")[1]
             
     if w1 not in WORDS:
-        if word in candidates(w1):         
+        if word in candidates(w1):       
             return word
         else:
             return correction(w1)
@@ -164,7 +164,8 @@ def correctionText(sentences):
     if len(a) == 1:
         return correction(sentences)
     textRight = ""
-    a[0] = correction(a[0])
+
+    a[0] = correctionFirst(a)
     textRight += a[0] + " "
     for k in range(1, len(a)):
         textRight += correctionBi_gram(a[k-1] + " " + a[k]) + " "
@@ -172,6 +173,25 @@ def correctionText(sentences):
         a[k] = arr[len(arr)-1]
         
     return textRight
+
+def correctionFirst(arrText):
+    first = arrText[0]
+    second = correction(arrText[1])
+    Pmax = 0
+    word = ""
+    for bi_word in Bi_Gram:
+        if bi_word.split(" ")[1] == second:
+            if Pw0w1(bi_word) > Pmax:
+                Pmax = Pw0w1(bi_word)
+                word = bi_word.split(" ")[0]
+    if first not in WORDS:
+        if word in candidates(first):       
+            return word
+        else:
+            return correction(first)
+    else:
+        return first
+
 
 def readTV(lines):
     a = []
@@ -213,5 +233,7 @@ if __name__ == '__main__':
     #print(unit_tests())
     #Testset(open('data_text1.txt'))
     #option()
-    print(correctionText("cô âsy thaajt đảm đag"))
+    print(correctionText("Emm ddax bỏa ttooi ddi thieejt roofi phhari hôg"))
+    #print(correctionText("Thusy kieefu"))
+    
     
