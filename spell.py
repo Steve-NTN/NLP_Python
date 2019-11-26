@@ -22,6 +22,7 @@ VIET_REPLS = {u"[àảãáạ]": u"a",     u"[ÀẢÃÁẠ]": u"A",
               u"[ưừửữứự]": u"ư",    u"[ƯỪỬỮỨỰ]": u"Ư",
               u"[ỳỷỹýỵ]": u"y",     u"[ỲỶỸÝỴ]": u"Y"}
 import re
+import io
 from collections import Counter
 
 ##Uni-Gram
@@ -155,35 +156,37 @@ def Testset(lines):
     import time
     start = time.clock()
     good, n = 0, 0
-    for line in lines:
-        if len(line) == 0:
-            t = time.clock() - start
-            print('{:.0%} correct of {} words at {:.0f}s'.format(good/n, n, t))
-            exit()
-        else:
-            
-            (right, wrongs) = (line.split(':'))
-            for wrong in wrongs.split():
-                w = correction(wrong)    
-                good += (w == right)            
-                n += 1
-            print( len(line))
+    for line in lines:      
+        (right, wrongs) = (line.split(':'))
+        for wrong in wrongs.split():
+            w = correction(wrong)    
+            good += (w == right)            
+            n += 1
+
+    t = time.clock() - start
+    print(t)
+    print('{:.0%} correct of {} words at '.format(good/n, n), t, "secon")
 
 ##Check 2 side by side words in sentences and return corrected sentences
-def correctionText(sentences):
-    sentences.strip()
-    a = sentences.lower().split(' ')
-    if len(a) == 1:
-        return correction(sentences)
+def correctionText(text):
+    sentences = text.split("\n")
     textRight = ""
+    for sentence in sentences:
+        sentence = sentence.strip()
+        if sentence != None:
+            sentence.strip()
+            sentence = re.sub(" +", " ", sentence)
+            a = sentence.lower().split(' ')
+            if len(a) == 1:
+                return correction(sentence)
 
-    a[0] = correctionFirst(a)
-    textRight += a[0] + " "
-    for k in range(1, len(a)):
-        textRight += correctionBi_gram(a[k-1] + " " + a[k]) + " "
-        arr = textRight.split()
-        a[k] = arr[len(arr)-1]
-        
+            a[0] = correctionFirst(a)
+            textRight += a[0] + " "
+            for k in range(1, len(a)):
+                textRight += correctionBi_gram(a[k-1] + " " + a[k]) + " "
+                arr = textRight.split()
+                a[k] = arr[len(arr)-1]
+            textRight += "\n"   
     return textRight
 
 ##Return the first word in sentences by checking the next word
@@ -246,7 +249,7 @@ if __name__ == '__main__':
     #print(unit_tests())
     #Testset(open('data_text1.txt'))
     #option()
-    print(correctionText("Emm ddax bỏa ttooi ddi thieejt roofi phhari hôg"))
-    #print(Testset(open("data_text1.txt", encoding="utf8")))
+    #print(correctionText("Emm    ddax bỏa    ttooi ddi thieejt roofi phhari hôg"))
+    print(Testset(open("data_text1.txt", encoding="utf8")))
     
     
