@@ -172,21 +172,24 @@ def correctionText(text):
     sentences = text.split("\n")
     textRight = ""
     for sentence in sentences:
-        sentence = sentence.strip()
-        if sentence != None:
-            sentence.strip()
-            sentence = re.sub(" +", " ", sentence)
-            a = sentence.lower().split(' ')
-            if len(a) == 1:
-                return correction(sentence)
+        if sentence == "":
+            textRight += "\n"
+        else:
+            sentence = sentence.strip()
+            if sentence != None:
+                sentence.strip()
+                sentence = re.sub(" +", " ", sentence)
+                a = sentence.lower().split(' ')
+                if len(a) == 1:
+                    return correction(sentence)
 
-            a[0] = correctionFirst(a)
-            textRight += a[0] + " "
-            for k in range(1, len(a)):
-                textRight += correctionBi_gram(a[k-1] + " " + a[k]) + " "
-                arr = textRight.split()
-                a[k] = arr[len(arr)-1]
-            textRight += "\n"   
+                a[0] = correctionFirst(a)
+                textRight += a[0] + " "
+                for k in range(1, len(a)):
+                    textRight += correctionBi_gram(a[k-1] + " " + a[k]) + " "
+                    arr = textRight.split()
+                    a[k] = arr[len(arr)-1]
+                textRight += "\n"   
     return textRight
 
 ##Return the first word in sentences by checking the next word
@@ -249,7 +252,12 @@ if __name__ == '__main__':
     #print(unit_tests())
     #Testset(open('data_text1.txt'))
     #option()
-    #print(correctionText("Emm    ddax bỏa    ttooi ddi thieejt roofi phhari hôg"))
-    print(Testset(open("data_text1.txt", encoding="utf8")))
+    print(correctionText("""Xử lis ngoon nguwxx tự nhieenn
+
+Nguowc mawjt leen nhhifn ttrowfi
+
+Emm ddax bỏa ttooi ddi thieejt rooi phhari hôg
+"""))
+    #print(Testset(open("data_text1.txt", encoding="utf8")))
     
     
