@@ -151,21 +151,36 @@ def spelltest(tests, verbose=False):
 def countLine(f):
     return sum(1 for line in f)
 
-def Testset(lines):
+def check(sentence1, sentence2):
+    
+    arr1 = sentence1.split(" ")
+    arr1.remove("\n")
+    arr2 = sentence2.split(" ")
+    right, n = 0, len(arr2)
+    for i in range(len(arr2)):
+        if arr1[i] == arr2[i]:
+            right += 1
+    return (right, n)  
+
+def Testset(text):
     
     import time
     start = time.clock()
-    good, n = 0, 0
-    for line in lines:      
-        (right, wrongs) = (line.split(':'))
-        for wrong in wrongs.split():
-            w = correction(wrong)    
-            good += (w == right)            
-            n += 1
-
+    arr = []
+    f = open(text, encoding="utf8")
+    for i in f:
+        arr.append(i.replace("\n", "").lower())
+    good, sum = 0, 0 
+    for i in arr:
+        if i != None:
+            wrong = correctionText(i.split(":")[0])
+            right = i.split(":")[1]
+            g, n = check(wrong, right)
+            good += g
+            sum += n
+    print(good, sum)
     t = time.clock() - start
-    print(t)
-    print('{:.0%} correct of {} words at '.format(good/n, n), t, "secon")
+    print('{:.0%} correct of {} words at '.format(good/sum, sum), t, "s")
 
 ##Check 2 side by side words in sentences and return corrected sentences
 def correctionText(text):
@@ -252,12 +267,9 @@ if __name__ == '__main__':
     #print(unit_tests())
     #Testset(open('data_text1.txt'))
     #option()
-    print(correctionText("""Xử lis ngoon nguwxx tự nhieenn
+    
+    #print(correctionText("""Xử lis ngoon nguwxx tự nhieenn"""))
+    Testset("data_text1.txt")
 
-Nguowc mawjt leen nhhifn ttrowfi
-
-Emm ddax bỏa ttooi ddi thieejt rooi phhari hôg
-"""))
-    #print(Testset(open("data_text1.txt", encoding="utf8")))
     
     
